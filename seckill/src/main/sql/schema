@@ -1,0 +1,31 @@
+CREATE DATABASE seckill;
+USE seckill;
+CREATE TABLE stock(
+	seckill_id BIGINT NOT NULL AUTO_INCREMENT COMMENT '商品id',
+	NAME VARCHAR(120) NOT NULL COMMENT '商品名称',
+	number INT NOT NULL COMMENT '库存数量',
+	start_time TIMESTAMP NOT NULL COMMENT '秒杀开始时间',
+	end_time TIMESTAMP NOT NULL COMMENT '秒杀结束时间',
+	create_time TIMESTAMP NOT NULL  COMMENT '秒杀创建时间',
+	PRIMARY KEY(seckill_id),
+	KEY idx_start_time(start_time),
+	KEY idx_end_time(end_time),
+	KEY idx_create_time(create_time)
+) ENGINE =INNODB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COMMENT='秒杀库存表';
+
+INSERT INTO
+	stock(NAME,number,start_time,end_time,create_time)
+VALUES
+	('1000秒杀iphone6',100,'2020-6-29 00:00:00','2020-6-30 00:00:00',NOW()),
+	('500秒杀小米6',200,'2020-6-29 00:00:00','2020-6-30 00:00:00',NOW()),
+	('3000秒杀红米',300,'2020-6-29 00:00:00','2020-6-30 00:00:00',NOW()),
+	('2000秒杀华为',400,'2020-6-29 00:00:00','2020-6-30 00:00:00',NOW());
+
+CREATE TABLE success_killed(
+	seckill_id BIGINT NOT NULL  COMMENT '商品id',
+	user_phone BIGINT NOT NULL  COMMENT '用户手机号',
+	state TINYINT NOT NULL DEFAULT -1 COMMENT '状态：-1无效0成功1已付款2已发货',
+	create_time TIMESTAMP NOT NULL  COMMENT '创建时间',
+	PRIMARY KEY(seckill_id,user_phone),
+	KEY idx_create_time(create_time)
+)ENGINE =INNODB DEFAULT CHARSET=utf8 COMMENT ='秒杀成功明细表';
